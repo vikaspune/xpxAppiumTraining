@@ -1,6 +1,7 @@
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.touch.TouchActions;
@@ -10,6 +11,7 @@ import org.testng.annotations.Test;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 
 public class SwipeExampleAndBuiltInApp {
@@ -22,12 +24,15 @@ public class SwipeExampleAndBuiltInApp {
 		caps = new DesiredCapabilities();
 		caps.setCapability(MobileCapabilityType.PLATFORM_NAME, "android");
 		caps.setCapability(MobileCapabilityType.DEVICE_NAME, "S5");
-		caps.setCapability("appPackage", "com.android.settings");
-		caps.setCapability("appActivity", ".Settings");
+		caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.android.settings");
+		caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ".Settings");
 
 		try {
 			driver = new AndroidDriver<AndroidElement>(new URL("http://localhost:4723/wd/hub"), caps);
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			act = new TouchAction(driver);
+			
+			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -53,8 +58,8 @@ public class SwipeExampleAndBuiltInApp {
 
 	@Test(priority = 4)
 	public void TurnOnAndOffWiFi() {
-		driver.findElement(By.xpath("//android.widget.TextView[@text='Connections']")).click();
-		driver.findElement(By.xpath("//android.widget.TextView[@text='Wi-Fi']")).click();
+		driver.findElement(By.xpath("//*[@text='Connections']")).click();
+		driver.findElement(By.xpath("//*[@text='Wi-Fi']")).click();
 		driver.findElement(By.id("com.android.settings:id/switch_widget")).click();
 		driver.findElement(By.id("com.android.settings:id/switch_widget")).click();
 	}
